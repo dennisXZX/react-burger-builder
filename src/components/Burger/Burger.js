@@ -8,12 +8,22 @@ const burger = (props) => {
      2. represent the amount of each ingredient using the length of an array
         [Array(1), Array(1), Array(2), Array(2)], each element in the array is 'undefined'
      3. map each array and convert each 'undefined' into a <BurgerIngredient /> component
+     4. flatten the array by using reduce()
   */
-  const transformedIngredients = Object.keys(props.ingredients).map((ingredientKey) => {
-    return [...Array(props.ingredients[ingredientKey])].map((_, index) => {
-      return <BurgerIngredient key={ingredientKey + index} type={ingredientKey} />
-    });
-  });
+  let transformedIngredients = Object.keys(props.ingredients)
+    .map((ingredientKey) => {
+      return [...Array(props.ingredients[ingredientKey])]
+        .map((_, index) => {
+          return <BurgerIngredient key={ingredientKey + index} type={ingredientKey} />
+        });
+    })
+    .reduce((arr, element) => {
+      return arr.concat(element)
+    }, []);
+
+  if (transformedIngredients.length === 0) {
+    transformedIngredients = <p>Please start adding ingredients!</p>
+  }
 
   return (
     <div className={classes.Burger}>
