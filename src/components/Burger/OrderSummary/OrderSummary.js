@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 
+import Button from '../../UI/Button/Button';
+
 const orderSummary = (props) => {
   // 1. get all the keys from the ingredients object
   // 2. generate a list based on the keys
@@ -15,12 +17,15 @@ const orderSummary = (props) => {
 
   return (
     <Fragment>
-      <h3>Your Order</h3>
+      <h2>Your Order</h2>
       <p>A delicious burger with the following ingredients:</p>
       <ul>
         {ingredientSummary}
       </ul>
+      <p style={{ fontWeight: 'bold' }}>Total Price: ${props.totalPrice.toFixed(2)}</p>
       <p>Continue to Checkout?</p>
+      <Button btnType="Danger" clicked={props.purchaseCancelled}>Cancel</Button>
+      <Button btnType="Success" clicked={props.purchaseContinued}>Continue</Button>
     </Fragment>
   );
 };

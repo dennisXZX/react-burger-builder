@@ -107,6 +107,14 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: true });
   }
 
+  purchaseCancelHandler = () => {
+    this.setState({ purchasing: false })
+  }
+
+  purchaseContinueHandler = () => {
+    console.log('continued');
+  }
+
   render() {
     // create a copy of the ingredient object
     // { salad: 1, bacon: 2, cheese: 0, meat: 0 }
@@ -122,8 +130,14 @@ class BurgerBuilder extends Component {
 
     return (
       <Fragment>
-        <Modal show={this.state.purchasing}>
-          <OrderSummary ingredients={this.state.ingredients} />
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}>
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            totalPrice={this.state.totalPrice}
+            purchaseCancelled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler}/>
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
