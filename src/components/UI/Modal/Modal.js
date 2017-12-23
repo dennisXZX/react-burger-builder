@@ -7,7 +7,7 @@ import classes from './Modal.css';
 const modal = (props) => (
   <Fragment>
     <Backdrop
-      modalClosed={props.modalClosed}
+      clicked={props.modalClosed}
       show={props.show} />
     <div
       className={classes.Modal}
