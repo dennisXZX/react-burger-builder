@@ -11,7 +11,9 @@ class modal extends Component {
   // Modal component should be re-rendered only when user clicks 'ORDER NOW' button
   shouldComponentUpdate(nextProps, nextState) {
     // Modal component re-render only when the 'show' property changes
-    return nextProps.show !== this.props.show;
+    // or when its child summary order component changes
+    return (nextProps.show !== this.props.show) ||
+           (nextProps.children !== this.props.children);
   }
 
   render() {
