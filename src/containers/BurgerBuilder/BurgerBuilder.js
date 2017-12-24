@@ -5,6 +5,8 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
+import axios from '../../axios-orders';
+
 const INGREDIENT_PRICES = {
   salad: 0.5,
   cheese: 0.4,
@@ -112,7 +114,32 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    console.log('continued');
+    // create the data object to be sent to backend
+    const order = {
+      ingredients: this.state.ingredients,
+      // normally the price should be calculated in the server side
+      // to prevent any manipulation
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Dennis',
+        address: {
+          street: '1 Test St',
+          zipCode: '2017',
+          country: 'Australia'
+        },
+        email: 'dennis@gmail.com'
+      },
+      deliveryMethod: 'express'
+    }
+
+    // send the data to backend
+    axios.post('/orders.json', order)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
