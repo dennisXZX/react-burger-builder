@@ -71,12 +71,19 @@ class ContactData extends Component {
     // display a spinner when the order data is being sent to backend
     this.setState({ loading: true });
 
+    const formData = {};
+
+    for (let formElementIdentifier in this.state.orderForm) {
+      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+    }
+
     // create the data object to be sent to backend
     const order = {
       ingredients: this.props.ingredients,
       // normally the price should be calculated in the server side
       // to prevent any manipulation
       price: this.props.price,
+      orderData: formData
     }
 
     // send the data to backend
@@ -124,7 +131,7 @@ class ContactData extends Component {
     }
 
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
         {formElementsArray.map((formElement) => (
           <Input
             key={formElement.id}
