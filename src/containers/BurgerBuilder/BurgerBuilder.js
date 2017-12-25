@@ -123,35 +123,51 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    // display a spinner when the order data is being sent to backend
-    this.setState({ loading: true });
+    // // display a spinner when the order data is being sent to backend
+    // this.setState({ loading: true });
+    //
+    // // create the data object to be sent to backend
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   // normally the price should be calculated in the server side
+    //   // to prevent any manipulation
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Dennis',
+    //     address: {
+    //       street: '1 Test St',
+    //       zipCode: '2017',
+    //       country: 'Australia'
+    //     },
+    //     email: 'dennis@gmail.com'
+    //   },
+    //   deliveryMethod: 'express'
+    // }
+    //
+    // // send the data to backend
+    // axios.post('/orders.json', order)
+    //   .then((response) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    const queryParams = [];
 
-    // create the data object to be sent to backend
-    const order = {
-      ingredients: this.state.ingredients,
-      // normally the price should be calculated in the server side
-      // to prevent any manipulation
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Dennis',
-        address: {
-          street: '1 Test St',
-          zipCode: '2017',
-          country: 'Australia'
-        },
-        email: 'dennis@gmail.com'
-      },
-      deliveryMethod: 'express'
+    // convert the ingredient object into an array
+    // ["bacon=1", "cheese=0", "meat=0", "salad=1"]
+    for (let ingredient in this.state.ingredients) {
+      queryParams.push(`${ingredient}=${encodeURIComponent(this.state.ingredients[ingredient])}`);
     }
 
-    // send the data to backend
-    axios.post('/orders.json', order)
-      .then((response) => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // convert the ingredient array into a string
+    // 'bacon=0&cheese=0&meat=0&salad=1'
+    const queryString = queryParams.join('&');
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${queryString}`
+    });
   }
 
   render() {
