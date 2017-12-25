@@ -29,7 +29,7 @@ class ContactData extends Component {
       ingredients: this.props.ingredients,
       // normally the price should be calculated in the server side
       // to prevent any manipulation
-      price: this.props.totalPrice,
+      price: this.props.price,
       customer: {
         name: 'Dennis',
         address: {
