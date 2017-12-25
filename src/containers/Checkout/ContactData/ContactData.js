@@ -10,11 +10,57 @@ import classes from './ContactData.css';
 
 class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    orderForm : {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Street'
+        },
+        value: ''
+      },
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'ZIP Code'
+        },
+        value: ''
+      },
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country'
+        },
+        value: ''
+      },
+      email: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Email'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastest' },
+            { value: 'cheapest', displayValue: 'Cheapest' }
+          ]
+        },
+        value: ''
+      }
     },
     loading: false
   }
@@ -31,16 +77,6 @@ class ContactData extends Component {
       // normally the price should be calculated in the server side
       // to prevent any manipulation
       price: this.props.price,
-      customer: {
-        name: 'Dennis',
-        address: {
-          street: '1 Test St',
-          zipCode: '2017',
-          country: 'Australia'
-        },
-        email: 'dennis@gmail.com'
-      },
-      deliveryMethod: 'express'
     }
 
     // send the data to backend
@@ -54,13 +90,49 @@ class ContactData extends Component {
       });
   }
 
+  inputChangeHandler = (event, inputIdentifier) => {
+    // clone the orderForm order
+    const updatedOrderForm = {
+      ...this.state.orderForm
+    };
+
+    // clone the object associated with the input
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier]
+    };
+
+    // update the value
+    updatedFormElement.value = event.target.value;
+
+    // update the form
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+    // update the state
+    this.setState({
+      orderForm: updatedOrderForm
+    });
+  }
+
   render() {
+    const formElementsArray = [];
+
+    for (let key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key]
+      });
+    }
+
     let form = (
       <form>
-        <Input inputtype="input" type="text" name="name" placeholder="Your name" />
-        <Input inputtype="input" type="email" name="email" placeholder="Your email" />
-        <Input inputtype="input" type="text" name="street" placeholder="Street" />
-        <Input inputtype="input" type="text" name="postal" placeholder="Postal Code" />
+        {formElementsArray.map((formElement) => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(event) => this.inputChangeHandler(event, formElement.id)} />
+        ))}
         <Button
           btnType="Success"
           clicked={this.orderHandler}>
