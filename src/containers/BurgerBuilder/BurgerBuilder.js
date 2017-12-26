@@ -13,7 +13,6 @@ import axios from '../../axios-orders';
 
 class BurgerBuilder extends Component {
   state = {
-    purchasable: false,
     purchasing: false,
     loading: false,
     error: false
@@ -41,9 +40,7 @@ class BurgerBuilder extends Component {
         return sum + amount;
       }, 0);
 
-    this.setState({
-      purchasable: sum > 0
-    });
+    return sum > 0;
   }
 
   purchaseHandler = () => {
@@ -55,24 +52,7 @@ class BurgerBuilder extends Component {
   }
 
   purchaseContinueHandler = () => {
-    const queryParams = [];
-
-    // convert the ingredient object into an array
-    // ["bacon=1", "cheese=0", "meat=0", "salad=1"]
-    for (let ingredient in this.props.ingredients) {
-      queryParams.push(`${ingredient}=${encodeURIComponent(this.props.ingredients[ingredient])}`);
-    }
-
-    queryParams.push(`price=${this.state.totalPrice}`);
-
-    // convert the ingredient array into a string
-    // 'bacon=0&cheese=0&meat=0&salad=1'
-    const queryString = queryParams.join('&');
-
-    this.props.history.push({
-      pathname: '/checkout',
-      search: `?${queryString}`
-    });
+    this.props.history.push('/checkout');
   }
 
   render() {
@@ -113,7 +93,7 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             totalPrice={this.props.price}
-            purchasable={this.state.purchasable}
+            purchasable={this.updatePurchaseState(this.props.ingredients)}
             ordered={this.purchaseHandler}
             disabled={disabledInfo} />
         </Fragment>
