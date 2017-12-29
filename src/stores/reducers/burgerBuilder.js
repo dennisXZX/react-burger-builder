@@ -1,9 +1,16 @@
 import * as actionTypes from '../actions/actionTypes';
 
+/*
+* ingredients: ingredients for the burger
+* totalPrice: the total price of the burger
+* error: whether there is an error when the burger is being built
+* building: whether a burger is in the middle of being built
+* */
 const initialState = {
   ingredients: null,
   totalPrice: 0,
-  error: false
+  error: false,
+  building: false
 }
 
 const INGREDIENT_PRICES = {
@@ -20,7 +27,8 @@ const addIngredient = (state, action) => {
       ...state.ingredients,
       [action.ingredientName]: state.ingredients[action.ingredientName] + 1
     },
-    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+    building: true
   };
 }
 
@@ -31,7 +39,8 @@ const removeIngredient = (state, action) => {
       ...state.ingredients,
       [action.ingredientName]: state.ingredients[action.ingredientName] - 1
     },
-    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+    building: true
   };
 }
 
@@ -45,7 +54,8 @@ const setIngredients = (state, action) => {
       meat: action.ingredients.meat
     },
     totalPrice: 0,
-    error: false
+    error: false,
+    building: false
   };
 }
 
