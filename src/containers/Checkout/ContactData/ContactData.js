@@ -21,7 +21,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Your Name'
         },
-        value: '',
+        value: 'Dennis',
         validation: {
           required: true
         },
@@ -35,7 +35,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Street'
         },
-        value: '',
+        value: 'New Street',
         validation: {
           required: true
         },
@@ -49,7 +49,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'ZIP Code'
         },
-        value: '',
+        value: '45323',
         validation: {
           required: true,
           minLength: 5,
@@ -65,7 +65,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Country'
         },
-        value: '',
+        value: 'Aus',
         validation: {
           required: true
         },
@@ -79,7 +79,7 @@ class ContactData extends Component {
           type: 'email',
           placeholder: 'Email'
         },
-        value: '',
+        value: 'dd@gmail.com',
         validation: {
           required: true
         },
@@ -179,6 +179,7 @@ class ContactData extends Component {
   render() {
     const formElementsArray = [];
 
+    // convert to an array of [{id: "name", config: {…}}, {id: "street", config: {…}}]
     for (let key in this.state.orderForm) {
       formElementsArray.push({
         id: key,

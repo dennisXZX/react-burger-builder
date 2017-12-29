@@ -20,6 +20,8 @@ class BurgerBuilder extends Component {
     this.props.onInitIngredients();
   }
 
+  // check if there is any ingredient in the state
+  // disable the 'order now' button if there is no ingredient added
   updatePurchaseState = (ingredients) => {
     // 1. get all the keys of the ingredients object
     // 2. get all the values of the ingredients object
@@ -55,8 +57,9 @@ class BurgerBuilder extends Component {
       ...this.props.ingredients
     };
 
-    // convert the object to the new format
+    // convert the object to a new format
     // { salad: true, bacon: true, cheese: false, meat: false }
+    // salad: true means there is no salad ingredient
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }

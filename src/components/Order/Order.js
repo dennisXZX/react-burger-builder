@@ -5,6 +5,7 @@ import classes from './Order.css';
 const order = (props) => {
   const ingredients = [];
 
+  // convert to an array of [{name: "bacon", amount: 1}, {name: "cheese", amount: 0}]
   for (let ingredientName in props.ingredients) {
     ingredients.push({
       name: ingredientName,
