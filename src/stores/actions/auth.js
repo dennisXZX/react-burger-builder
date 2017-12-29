@@ -7,10 +7,11 @@ export const authStart = () => {
   }
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (idToken, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
-    authData: authData
+    idToken: idToken,
+    userId: userId
   }
 };
 
@@ -21,7 +22,10 @@ export const authFail = (error) => {
   }
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignup) => {
+  const fireBaseSignUpEndpoint = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAs5vT4Uvj7xs65g7XVfCNbv_n0QUgr-8Q';
+  const fireBaseSignInEndpoint = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAs5vT4Uvj7xs65g7XVfCNbv_n0QUgr-8Q';
+
   return (dispatch) => {
     dispatch(authStart());
 
@@ -31,11 +35,17 @@ export const auth = (email, password) => {
       returnSecureToken: true
     }
 
-    // send a sign up request to Firebase
-    axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAs5vT4Uvj7xs65g7XVfCNbv_n0QUgr-8Q', authData)
+    // check if it's sign up or sign in
+    let url = isSignup ? fireBaseSignUpEndpoint : fireBaseSignInEndpoint;
+
+    console.log(url);
+
+    console.log(url);
+    // send a request to Firebase
+    axios.post(url, authData)
       .then((response) => {
         console.log(response);
-        dispatch(authSuccess(response));
+        dispatch(authSuccess(response.data.idToken, response.data.localId));
       })
       .catch((error) => {
         console.log(error);
