@@ -49,7 +49,7 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'ZIP Code'
         },
-        value: '45323',
+        value: '4532',
         validation: {
           required: true,
           minLength: 5,
@@ -143,7 +143,7 @@ class ContactData extends Component {
 
   }
 
-  inputChangeHandler = (event, inputIdentifier) => {
+  inputChangedHandler = (event, inputIdentifier) => {
     // clone the orderForm order
     const updatedOrderForm = {
       ...this.state.orderForm
@@ -199,7 +199,7 @@ class ContactData extends Component {
             shouldValidate={formElement.config.validation}
             touched={formElement.config.touched}
             errorMessage={formElement.config.errorMessage}
-            changed={(event) => this.inputChangeHandler(event, formElement.id)} />
+            changed={(event) => this.inputChangedHandler(event, formElement.id)} />
         ))}
         <Button
           btnType="Success"
