@@ -22,6 +22,21 @@ export const authFail = (error) => {
   }
 };
 
+export const logout = () => {
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  }
+};
+
+// log user out after the token expiration time
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
+  }
+};
+
 export const auth = (email, password, isSignup) => {
   const fireBaseSignUpEndpoint = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAs5vT4Uvj7xs65g7XVfCNbv_n0QUgr-8Q';
   const fireBaseSignInEndpoint = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAs5vT4Uvj7xs65g7XVfCNbv_n0QUgr-8Q';
@@ -38,13 +53,11 @@ export const auth = (email, password, isSignup) => {
     // check if it's sign up or sign in
     let url = isSignup ? fireBaseSignUpEndpoint : fireBaseSignInEndpoint;
 
-    console.log(url);
-
-    console.log(url);
     // send a request to Firebase
     axios.post(url, authData)
       .then((response) => {
         dispatch(authSuccess(response.data.idToken, response.data.localId));
+        dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((error) => {
         dispatch(authFail(error.response.data.error));
