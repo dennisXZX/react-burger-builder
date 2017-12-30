@@ -5,11 +5,9 @@ import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-
 import * as actions from '../../../stores/actions/index';
-
 import axios from '../../../axios-orders';
-
+import { checkValidity } from '../../../shared/utility';
 import classes from './ContactData.css';
 
 class ContactData extends Component {
@@ -158,7 +156,7 @@ class ContactData extends Component {
     // update the value
     updatedFormElement.value = event.target.value;
     // check if the form contains valid data
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validation);
     updatedFormElement.touched = true;
 
     // update the form
