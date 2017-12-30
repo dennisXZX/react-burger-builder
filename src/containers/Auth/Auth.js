@@ -136,6 +136,7 @@ class Auth extends Component {
     }
 
     let authRedirect = null;
+    console.log('token: ' + this.props.isAuthenticated);
     if (this.props.isAuthenticated) {
       authRedirect = <Redirect to={this.props.authRedirectPath} />
     }
@@ -161,7 +162,7 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
-    building: state.burgerBuilder.building,
+    buildingBurger: state.burgerBuilder.building,
     authRedirectPath: state.auth.authRedirectPath
   };
 };
