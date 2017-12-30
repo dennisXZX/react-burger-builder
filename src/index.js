@@ -12,7 +12,10 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
 // setting up Redux DevTools Extension
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// only use on development mode
+const composeEnhancers = (process.env.NODE_ENV === 'development'
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  : null) || compose;
 
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
