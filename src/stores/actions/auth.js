@@ -23,6 +23,11 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
+  // clear up the local storage data
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
+
   return {
     type: actionTypes.AUTH_LOGOUT
   }
@@ -56,6 +61,13 @@ export const auth = (email, password, isSignup) => {
     // send a request to Firebase
     axios.post(url, authData)
       .then((response) => {
+        // calculate the token expiration date
+        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+
+        // store the toke and expiration date in localStorage
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('userId', response.data.localId);
+        localStorage.setItem('expirationDate', expirationDate);
         dispatch(authSuccess(response.data.idToken, response.data.localId));
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
@@ -69,5 +81,25 @@ export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path: path
+  };
+};
+
+export const authCheckState = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      dispatch(logout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem('expirationDate'));
+      if (expirationDate > new Date()) {
+        const userId = localStorage.getItem('userId');
+        dispatch(authSuccess(token, userId));
+        const expirationTime = (expirationDate.getTime() - new Date().getTime()) / 1000;
+        dispatch(checkAuthTimeout(expirationTime));
+      } else {
+        dispatch(logout());
+      }
+    }
   };
 };
